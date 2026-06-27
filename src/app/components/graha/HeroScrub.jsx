@@ -48,130 +48,216 @@ function getOpacity(progress, range) {
 }
 
 export function HeroScrub() {
-  const { canvasRef } = useFrameSequence();
+  const [ready, setReady] = useState(false);
+  const [loadPct, setLoadPct] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [heroVisible, setHeroVisible] = useState(true);
 
+  const { canvasRef } = useFrameSequence({
+    onReady: () => setReady(true),
+    onProgress: (pct) => setLoadPct(pct),
+  });
+
+  // hero-progress custom event from RAF loop
   useEffect(() => {
     const handler = (e) => setProgress(e.detail);
     window.addEventListener("hero-progress", handler, { passive: true });
     return () => window.removeEventListener("hero-progress", handler);
   }, []);
 
+  // Fix 1: lock body scroll until first 30 frames are decoded
+  useEffect(() => {
+    document.body.style.overflow = ready ? "" : "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, [ready]);
+
+  // Fix 2: track container visibility to hide/show fixed canvas
+  useEffect(() => {
+    const container = document.getElementById("hero-scrub-container");
+    if (!container) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setHeroVisible(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    obs.observe(container);
+    return () => obs.disconnect();
+  }, []);
+
   return (
-    <div
-      id="hero-scrub-container"
-      style={{ height: "600vh", position: "relative" }}
-    >
-      {/* Canvas background — sticky fullscreen */}
+    <>
+      {/* Fix 1: Loading screen — blocks scroll until frames decoded */}
+      {!ready && (
+        <div style={{
+          position: "fixed", inset: 0, background: "#07080A",
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          zIndex: 9999,
+        }}>
+          <p style={{
+            color: "#C8A96E", fontSize: 12,
+            letterSpacing: "0.2em", marginBottom: 20,
+            fontFamily: "sans-serif", textTransform: "uppercase",
+          }}>
+            MEMUAT PENGALAMAN
+          </p>
+          <div style={{ width: 200, height: 1, background: "#1a1a1a" }}>
+            <div style={{
+              height: "100%", background: "#C8A96E",
+              width: loadPct + "%", transition: "width 0.1s linear",
+            }} />
+          </div>
+          <p style={{ color: "#444", fontSize: 11, marginTop: 12, fontFamily: "sans-serif" }}>
+            {loadPct}%
+          </p>
+        </div>
+      )}
+
+      {/* Fix 2: Canvas is position:fixed — no layout thrash on scroll */}
       <canvas
         ref={canvasRef}
         style={{
-          position: "sticky",
+          position: "fixed",
           top: 0,
-          display: "block",
+          left: 0,
           width: "100vw",
           height: "100vh",
+          zIndex: heroVisible ? 1 : -1,
+          opacity: heroVisible ? 1 : 0,
+          transition: "opacity 0.3s ease",
           willChange: "transform",
-        }}
-      />
-
-      {/* Dark overlay gradient bawah untuk readability text */}
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          marginTop: "-100vh",
-          background: "linear-gradient(to right, rgba(0,0,0,0.65) 40%, transparent 100%)",
           pointerEvents: "none",
         }}
       />
 
-      {/* Chapter text overlays */}
-      {CHAPTERS.map((ch, i) => {
-        const opacity = getOpacity(progress, ch.range);
-        const translateY = opacity < 0.1 ? 20 : 0;
-        return (
-          <div
-            key={i}
-            style={{
-              position: "sticky",
-              top: 0,
-              height: "100vh",
-              marginTop: "-100vh",
-              display: "flex",
-              alignItems: "flex-end",
-              padding: "0 6vw 12vh",
-              opacity,
-              transform: `translateY(${translateY}px)`,
-              transition: "opacity 0.4s ease, transform 0.4s ease",
-              pointerEvents: opacity > 0.5 ? "auto" : "none",
-            }}
-          >
-            <div style={{ maxWidth: 560 }}>
-              <p style={{
+      {/* Scroll driver: 600vh tall, drives the RAF scrubbing */}
+      <div
+        id="hero-scrub-container"
+        style={{ height: "600vh", position: "relative", zIndex: 2 }}
+      >
+        {/* Dark overlay — sticky, above canvas */}
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            height: "100vh",
+            background: "linear-gradient(to right, rgba(0,0,0,0.65) 40%, transparent 100%)",
+            pointerEvents: "none",
+            zIndex: 3,
+          }}
+        />
+
+        {/* Chapter text overlays */}
+        {CHAPTERS.map((ch, i) => {
+          const opacity = getOpacity(progress, ch.range);
+          const translateY = opacity < 0.1 ? 20 : 0;
+          return (
+            <div
+              key={i}
+              style={{
+                position: "sticky",
+                top: 0,
+                height: "100vh",
+                marginTop: "-100vh",
+                display: "flex",
+                alignItems: "flex-end",
+                padding: "0 6vw 12vh",
+                opacity,
+                transform: `translateY(${translateY}px)`,
+                transition: "opacity 0.4s ease, transform 0.4s ease",
+                pointerEvents: opacity > 0.5 ? "auto" : "none",
+                zIndex: 4,
+              }}
+            >
+              <div style={{ maxWidth: 560 }}>
+                <p style={{
+                  fontSize: 11,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  color: "#C8A96E",
+                  marginBottom: 16,
+                  fontFamily: "sans-serif",
+                }}>
+                  {ch.eyebrow}
+                </p>
+                <h2 style={{
+                  fontSize: "clamp(36px, 5vw, 64px)",
+                  fontFamily: "Georgia, serif",
+                  color: "#F5F0E8",
+                  lineHeight: 1.1,
+                  fontWeight: 700,
+                  marginBottom: 20,
+                  whiteSpace: "pre-line",
+                }}>
+                  {ch.headline}
+                </h2>
+                <p style={{
+                  fontSize: 16,
+                  color: "#8C8078",
+                  lineHeight: 1.7,
+                  marginBottom: ch.cta ? 28 : 0,
+                  maxWidth: 400,
+                }}>
+                  {ch.sub}
+                </p>
+                {ch.cta && (
+                  <a
+                    href={ch.cta.href}
+                    style={{
+                      display: "inline-block",
+                      padding: "12px 28px",
+                      border: "1px solid #C8A96E",
+                      color: "#C8A96E",
+                      fontSize: 13,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      textDecoration: "none",
+                      fontFamily: "sans-serif",
+                      transition: "background 0.2s, color 0.2s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#C8A96E";
+                      e.currentTarget.style.color = "#000";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.color = "#C8A96E";
+                    }}
+                  >
+                    {ch.cta.label}
+                  </a>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Chapter indicator — top right */}
+        <div style={{
+          position: "sticky",
+          top: "24px",
+          height: 0,
+          display: "flex",
+          justifyContent: "flex-end",
+          paddingRight: "24px",
+          zIndex: 5,
+        }}>
+          {CHAPTERS.map((ch, i) => {
+            const op = getOpacity(progress, ch.range);
+            return op > 0.5 ? (
+              <span key={i} style={{
                 fontSize: 11,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
+                letterSpacing: "0.1em",
                 color: "#C8A96E",
-                marginBottom: 16,
                 fontFamily: "sans-serif",
               }}>
-                {ch.eyebrow}
-              </p>
-              <h2 style={{
-                fontSize: "clamp(36px, 5vw, 64px)",
-                fontFamily: "Georgia, serif",
-                color: "#F5F0E8",
-                lineHeight: 1.1,
-                fontWeight: 700,
-                marginBottom: 20,
-                whiteSpace: "pre-line",
-              }}>
-                {ch.headline}
-              </h2>
-              <p style={{
-                fontSize: 16,
-                color: "#8C8078",
-                lineHeight: 1.7,
-                marginBottom: ch.cta ? 28 : 0,
-                maxWidth: 400,
-              }}>
-                {ch.sub}
-              </p>
-              {ch.cta && (
-                <a
-                  href={ch.cta.href}
-                  style={{
-                    display: "inline-block",
-                    padding: "12px 28px",
-                    border: "1px solid #C8A96E",
-                    color: "#C8A96E",
-                    fontSize: 13,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    textDecoration: "none",
-                    fontFamily: "sans-serif",
-                    transition: "background 0.2s, color 0.2s",
-                  }}
-                  onMouseEnter={e => {
-                    e.target.style.background = "#C8A96E";
-                    e.target.style.color = "#000";
-                  }}
-                  onMouseLeave={e => {
-                    e.target.style.background = "transparent";
-                    e.target.style.color = "#C8A96E";
-                  }}
-                >
-                  {ch.cta.label}
-                </a>
-              )}
-            </div>
-          </div>
-        );
-      })}
+                0{i + 1} / 05
+              </span>
+            ) : null;
+          })}
+        </div>
+      </div>
 
-      {/* Scroll progress bar — sisi kiri */}
+      {/* Scroll progress bar — fixed left edge */}
       <div style={{
         position: "fixed",
         left: 0,
@@ -181,6 +267,8 @@ export function HeroScrub() {
         background: "rgba(200,169,110,0.15)",
         zIndex: 50,
         pointerEvents: "none",
+        opacity: heroVisible ? 1 : 0,
+        transition: "opacity 0.3s ease",
       }}>
         <div style={{
           width: "100%",
@@ -189,31 +277,6 @@ export function HeroScrub() {
           transition: "height 0.05s linear",
         }} />
       </div>
-
-      {/* Chapter indicator kanan atas */}
-      <div style={{
-        position: "sticky",
-        top: "24px",
-        height: 0,
-        display: "flex",
-        justifyContent: "flex-end",
-        paddingRight: "24px",
-        zIndex: 40,
-      }}>
-        {CHAPTERS.map((ch, i) => {
-          const op = getOpacity(progress, ch.range);
-          return op > 0.5 ? (
-            <span key={i} style={{
-              fontSize: 11,
-              letterSpacing: "0.1em",
-              color: "#C8A96E",
-              fontFamily: "sans-serif",
-            }}>
-              0{i + 1} / 05
-            </span>
-          ) : null;
-        })}
-      </div>
-    </div>
+    </>
   );
 }
