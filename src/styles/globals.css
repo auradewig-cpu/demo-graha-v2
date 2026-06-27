@@ -1,0 +1,148 @@
+/* Graha Studio Design Tokens */
+:root {
+  --gs-gold: #c8a96e;
+  --gs-gold-dim: #e3c285;
+  --gs-gold-bright: #e5c487;
+  --gs-bg: #0D0D0D;
+  --gs-surface: #131313;
+  --gs-surface-low: #1c1b1b;
+  --gs-surface-container: #20201f;
+  --gs-surface-high: #2a2a2a;
+  --gs-surface-highest: #353535;
+  --gs-on-surface: #e5e2e1;
+  --gs-on-surface-variant: #d0c5b5;
+  --gs-outline: #998f81;
+  --gs-outline-variant: #4d463a;
+  --gs-secondary: #c9c6c5;
+}
+
+/* Graha Studio Global Styles */
+.graha-root {
+  background-color: var(--gs-bg);
+  color: var(--gs-on-surface);
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+}
+
+.graha-root ::-webkit-scrollbar { width: 6px; }
+.graha-root ::-webkit-scrollbar-track { background: var(--gs-bg); }
+.graha-root ::-webkit-scrollbar-thumb { background: var(--gs-surface-highest); border-radius: 4px; }
+.graha-root ::-webkit-scrollbar-thumb:hover { background: var(--gs-gold); }
+
+/* Fade-in animations */
+@media (prefers-reduced-motion: no-preference) {
+  .gs-fade {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .gs-fade.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .gs-fade.d1 { transition-delay: 150ms; }
+  .gs-fade.d2 { transition-delay: 300ms; }
+  .gs-fade.d3 { transition-delay: 450ms; }
+  .gs-fade.d4 { transition-delay: 600ms; }
+}
+
+@keyframes gs-pulse {
+  0%   { box-shadow: 0 0 0px rgba(200, 169, 110, 0); }
+  50%  { box-shadow: 0 0 28px rgba(200, 169, 110, 0.3); }
+  100% { box-shadow: 0 0 0px rgba(200, 169, 110, 0); }
+}
+.gs-pulse { animation: gs-pulse 2.5s ease-in-out infinite; }
+
+/* Parallax image */
+.gs-parallax-img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* ═══ GLOBAL SCROLL SETTINGS ═══ */
+html {
+  scroll-behavior: auto !important;
+}
+body {
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+* {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ SCROLL REVEAL ANIMATIONS ═══ */
+
+[data-reveal] {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+[data-reveal="fade-up"] {
+  transform: translateY(50px);
+}
+[data-reveal="fade-up"].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-reveal="slide-left"] {
+  transform: translateX(-60px);
+}
+[data-reveal="slide-left"].is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+[data-reveal="slide-right"] {
+  transform: translateX(60px);
+}
+[data-reveal="slide-right"].is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+[data-reveal="scale-in"] {
+  transform: scale(0.9);
+}
+[data-reveal="scale-in"].is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-reveal="headline"] {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(30px);
+  opacity: 1 !important;
+}
+[data-reveal="headline"].is-revealed {
+  clip-path: inset(0 0 0% 0);
+  transform: translateY(0);
+}
+
+[data-reveal="line-draw"] {
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 1 !important;
+}
+[data-reveal="line-draw"].is-revealed {
+  transform: scaleX(1);
+}
+
+[data-stagger]:nth-child(1) { transition-delay: 0ms; }
+[data-stagger]:nth-child(2) { transition-delay: 120ms; }
+[data-stagger]:nth-child(3) { transition-delay: 240ms; }
+[data-stagger]:nth-child(4) { transition-delay: 360ms; }
+[data-stagger]:nth-child(5) { transition-delay: 480ms; }
+[data-stagger]:nth-child(6) { transition-delay: 600ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}

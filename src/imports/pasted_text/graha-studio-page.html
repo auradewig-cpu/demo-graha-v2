@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GRAHA Studio | Arsitektur &amp; Konstruksi</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Playfair Display & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#20201f",
+                        "secondary-fixed-dim": "#c9c6c5",
+                        "on-tertiary-container": "#3f4141",
+                        "on-secondary-fixed-variant": "#474646",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "outline-variant": "#4d463a",
+                        "secondary": "#c9c6c5",
+                        "on-surface": "#e5e2e1",
+                        "on-primary": "#402d00",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#594312",
+                        "surface-dim": "#131313",
+                        "secondary-container": "#4a4949",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#bab8b7",
+                        "primary-container": "#c8a96e",
+                        "inverse-on-surface": "#313030",
+                        "error": "#ffb4ab",
+                        "tertiary": "#c8c8c8",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#e3c285",
+                        "background": "#131313",
+                        "surface-container-highest": "#353535",
+                        "surface-bright": "#393939",
+                        "on-tertiary": "#2f3131",
+                        "on-primary-fixed": "#261900",
+                        "primary": "#e5c487",
+                        "on-secondary": "#313030",
+                        "surface-container-high": "#2a2a2a",
+                        "surface": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-variant": "#353535",
+                        "on-surface-variant": "#d0c5b5",
+                        "tertiary-container": "#acadad",
+                        "primary-fixed": "#ffdea3",
+                        "inverse-primary": "#735b28",
+                        "surface-tint": "#e3c285",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-primary-container": "#533d0c",
+                        "outline": "#998f81",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-background": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "160px",
+                        "margin-mobile": "24px",
+                        "margin-desktop": "80px",
+                        "container-max": "1440px",
+                        "gutter": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Playfair Display", "serif"],
+                        "display-lg-mobile": ["Playfair Display", "serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "headline-lg": ["Playfair Display", "serif"],
+                        "headline-xl": ["Playfair Display", "serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["80px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.2em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0D0D0D; /* Requested solid dark base */
+            color: #e5e2e1;
+            scroll-behavior: smooth;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0D0D0D; }
+        ::-webkit-scrollbar-thumb { background: #353535; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c8a96e; }
+        
+        .glow-effect {
+            box-shadow: 0 0 40px rgba(200, 169, 110, 0.08);
+        }
+        
+        .gold-border {
+            border: 1px solid rgba(200, 169, 110, 0.2);
+        }
+        
+        .btn-primary {
+            background-color: #c8a96e;
+            color: #0D0D0D;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(200, 169, 110, 0.15);
+            opacity: 0.9;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #c8a96e;
+            color: #c8a96e;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(200, 169, 110, 0.05);
+        }
+
+        /* Vertical Progress Indicator */
+        .scroll-progress-container {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 300px;
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: 40;
+            display: none;
+        }
+        @media (min-width: 1024px) {
+            .scroll-progress-container { display: block; }
+        }
+        .scroll-progress-bar {
+            width: 1px;
+            background-color: #c8a96e;
+            height: 0%;
+            transition: height 0.1s ease-out;
+        }
+
+        /* Fade In Up Animations */
+        @media (prefers-reduced-motion: no-preference) {
+            .fade-in-up {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .fade-in-up.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .delay-100 { transition-delay: 200ms; }
+            .delay-200 { transition-delay: 400ms; }
+            .delay-300 { transition-delay: 600ms; }
+            .delay-400 { transition-delay: 800ms; }
+
+            @keyframes subtle-pulse {
+                0% { transform: scale(1); box-shadow: 0 0 0 rgba(200, 169, 110, 0); }
+                50% { transform: scale(1.02); box-shadow: 0 0 25px rgba(200, 169, 110, 0.25); }
+                100% { transform: scale(1); box-shadow: 0 0 0 rgba(200, 169, 110, 0); }
+            }
+
+            .animate-pulse-premium {
+                animation: subtle-pulse 3.5s ease-in-out infinite;
+            }
+        }
+        
+        .parallax-img {
+            transform: translateY(var(--parallax-y, 0px)) scale(var(--hover-scale, 1.15));
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.7s ease;
+            will-change: transform;
+        }
+        
+        .parallax-container:hover .parallax-img {
+            --hover-scale: 1.25;
+        }
+    </style>
+</head>
+<body class="antialiased font-body-md text-body-md">
+<!-- TopNavBar Component -->
+<nav class="fixed top-0 w-full z-50 bg-transparent transition-all duration-500 ease-in-out flex justify-between items-center px-margin-mobile lg:px-margin-desktop py-8 w-full" id="main-nav">
+<a class="font-display-lg-mobile text-display-lg-mobile lg:font-display-lg lg:text-display-lg text-primary uppercase tracking-tighter hover:opacity-80 transition-opacity" href="#">
+            GRAHA STUDIO
+        </a>
+<div class="hidden lg:flex gap-8 items-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps uppercase" href="#portfolio">Portfolio</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps uppercase" href="#philosophy">Philosophy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps uppercase" href="#atelier">Atelier</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps uppercase" href="#journal">Journal</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps uppercase" href="#contact">Contact</a>
+</div>
+<a class="hidden md:inline-flex btn-secondary px-6 py-3 font-label-caps text-label-caps uppercase tracking-widest hover:opacity-80 transition-opacity" href="#contact">
+            Inquire
+        </a>
+<button class="lg:hidden text-primary">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</nav>
+<!-- Vertical Scroll Progress -->
+<div class="scroll-progress-container">
+<div class="scroll-progress-bar" id="scroll-progress"></div>
+</div>
+<!-- Hero Section -->
+<section class="min-h-screen relative flex items-center pt-32 pb-section-gap px-margin-mobile lg:px-margin-desktop max-w-container-max mx-auto chapter-section">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter w-full">
+<!-- Hero Content -->
+<div class="lg:col-span-6 flex flex-col justify-center z-10">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-widest mb-6 fade-in-up">ARSITEKTUR &amp; KONSTRUKSI</span>
+<h1 class="font-display-lg-mobile text-display-lg-mobile lg:font-display-lg lg:text-display-lg text-on-surface mb-8 leading-tight fade-in-up delay-100">
+                    Dari Pondasi<br/>Hingga Sempurna
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-lg fade-in-up delay-200">
+                    Mewujudkan visi arsitektural dengan presisi tanpa kompromi. Kami adalah mitra konstruksi premium untuk ruang yang abadi.
+                </p>
+<div class="fade-in-up delay-300">
+<a class="inline-flex btn-primary px-8 py-4 font-label-caps text-label-caps uppercase tracking-widest animate-pulse-premium" href="#contact" style="animation-duration: 1.75s;">
+                        Mulai Konsultasi
+                    </a>
+</div>
+</div>
+<!-- Hero Visual Placeholder -->
+<div class="lg:col-span-6 mt-12 lg:mt-0 fade-in-up delay-400">
+<div class="w-full aspect-[3/4] gold-border glow-effect relative overflow-hidden bg-surface-container-low flex items-center justify-center parallax-container">
+<div class="absolute inset-0 bg-cover bg-center opacity-70 parallax-img -inset-x-12 -inset-y-32" data-alt="A striking architectural visualization of a modern, minimalist concrete and glass villa set against a deep twilight sky. The structure features sharp geometric lines, warm interior lighting spilling out onto a dark textured stone patio, and a sleek infinity pool reflecting the structure. High contrast noir aesthetic with subtle gold ambient lighting. Cinematic, highly detailed, photorealistic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBURmxfwvbyxzkOhKK5QS62WXs0yQn2djkfVlPjeWnPXMdPIqueNaIy836089dKRCEsNrWeoN2PrBV43DOdOvRHwZ-xtvp63RNLwBsPe-zOzcuXOvM3Rc07BwmigUWWSVTHyxll74O7bKMGSU6t62dzgIZY0giCqaIokn-M6LwGMEIWtmOB48PoZHnHiWyqGLtMCwVRKBTHAYcelpfl-8nrzS3Rm_7awxNXNqMuQtD6XmXDomh_bJQr')"></div>
+<span class="material-symbols-outlined text-primary text-6xl opacity-50 z-10">play_circle</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Chapters Navigation (Sticky on desktop) -->
+<div class="hidden lg:block sticky top-32 z-30 px-margin-desktop max-w-container-max mx-auto mb-12 chapter-section">
+<div class="flex gap-8 border-b border-outline-variant/30 pb-4 fade-in-up">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="#ch-01">01 VISI</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="#ch-02">02 PERENCANAAN</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="#ch-03">03 KONSTRUKSI</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="#ch-04">04 PENYERAHAN</a>
+</div>
+</div>
+<!-- Scroll Sections -->
+<!-- Chapter 01 -->
+<section class="min-h-screen relative flex items-center py-section-gap px-margin-mobile lg:px-margin-desktop max-w-container-max mx-auto border-t border-outline-variant/10 chapter-section" id="ch-01">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter w-full">
+<div class="lg:col-span-5 flex flex-col justify-center">
+<span class="font-display-lg text-primary opacity-50 mb-4 fade-in-up">01</span>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-6 fade-in-up delay-100">Visi &amp; Konsep</h2>
+<div class="w-12 h-[1px] bg-primary mb-6 fade-in-up delay-200"></div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed fade-in-up delay-300">
+                    Setiap mahakarya dimulai dari dialog yang mendalam. Kami menerjemahkan aspirasi Anda menjadi konsep spasial yang berkarakter, menggabungkan estetika desain kontemporer dengan fungsionalitas absolut.
+                </p>
+</div>
+<div class="lg:col-span-7 lg:col-start-6 mt-12 lg:mt-0">
+<div class="w-full aspect-video gold-border bg-surface-container-low flex items-center justify-center relative overflow-hidden group fade-in-up delay-400 transition-all duration-500 hover:shadow-[0_0_50px_rgba(200,169,110,0.2)] parallax-container">
+<div class="absolute inset-0 -inset-x-12 -inset-y-32 bg-cover bg-center opacity-40 group-hover:opacity-60 parallax-img" data-alt="A moody, high-end architectural sketch phase scene. A heavy black drafting table illuminated by a single warm desk lamp. Blueprint rolls, a minimalist brass compass, and tracing paper with geometric architectural plans are visible. Deep shadows, rich textures, architectural noir aesthetic, photorealistic 8k." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuClynP11KE0JwKIBstzO1qzmS8lsLOUc9DPj8vMMZXx5xgnUH4KzStJqm4jkldGkoMNNgV39tYgJifeo0VOwVtPxRMAer0Ztlu-TwpdUikuakl1VD3BNrS3OFuX0K7XmdHOoglSq7Wm7Go0RDasQ3A_2-wKK0PiYDf-IDzV1CWyjof8rb9jWzcWgjFOwlm68tA60IO2orajwMkvYOt6LhSwWa7uBcZx4-CzRHKxFrfqTebQavUaCwTR");'></div>
+<span class="font-label-caps text-label-caps text-primary/50 tracking-widest relative z-10">VISUAL PLACEHOLDER</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Chapter 02 -->
+<section class="min-h-screen relative flex items-center py-section-gap px-margin-mobile lg:px-margin-desktop max-w-container-max mx-auto chapter-section" id="ch-02">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter w-full">
+<div class="lg:col-span-5 flex flex-col justify-center">
+<span class="font-display-lg text-primary opacity-50 mb-4 fade-in-up">02</span>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-6 fade-in-up delay-100">Perencanaan Teknis</h2>
+<div class="w-12 h-[1px] bg-primary mb-6 fade-in-up delay-200"></div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed fade-in-up delay-300">
+                    Keunggulan berada pada detail. Fase perencanaan teknis kami memastikan setiap inci material dan struktur dihitung dengan presisi matematis, menjamin durabilitas dan eksekusi tanpa cela.
+                </p>
+</div>
+<div class="lg:col-span-7 lg:col-start-6 mt-12 lg:mt-0">
+<div class="w-full aspect-video gold-border bg-surface-container-low flex items-center justify-center relative overflow-hidden group fade-in-up delay-400 transition-all duration-500 hover:shadow-[0_0_50px_rgba(200,169,110,0.2)] parallax-container">
+<div class="absolute inset-0 -inset-x-12 -inset-y-32 bg-cover bg-center opacity-40 group-hover:opacity-60 parallax-img" data-alt="A close-up abstract view of premium building materials arranged meticulously. Dark textured slate, smooth matte black concrete, and brushed brass metallic accents. Sharp geometric composition, dramatic directional lighting highlighting the textures. Minimalist luxury, architectural noir mood." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDeVnR5mqZpkRYPtZzBHNeJNTOeohc927yaVUzgHCgPadB5Xmu6JWa4AsSlXShWcpfN3uYnygHq4WkAB8o8jqQJvsFa32tOoDKouYh2XqrsYxF0HR3mq7yy3Fr5tygumvFBMFJZS3Ntb8VS5XBzOF24Ss3QHqrGigtxD1x48Vq6K2qEaMzi1qIEuj4YtbBEQsdrZycWhnolVa_hnyDTWjS7V-uL_mTvFgdgE_7EAkCFToEIaqyTt0id");'></div>
+<span class="font-label-caps text-label-caps text-primary/50 tracking-widest relative z-10">VISUAL PLACEHOLDER</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact CTA Section -->
+<section class="py-section-gap px-margin-mobile lg:px-margin-desktop bg-surface-container-low border-y border-outline-variant/20 mt-32 chapter-section" id="contact">
+<div class="max-w-4xl mx-auto text-center flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-4xl mb-6 fade-in-up">architecture</span>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-6 fade-in-up delay-100">Wujudkan Ruang Anda</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-2xl text-center fade-in-up delay-200">
+                Konsultasikan visi arsitektural Anda dengan tim ahli kami. Kami siap menerjemahkan ide menjadi struktur monumental.
+            </p>
+<div class="fade-in-up delay-300">
+<a class="inline-flex items-center gap-3 btn-primary px-10 py-5 font-label-caps text-label-caps uppercase tracking-widest glow-effect animate-pulse-premium" href="#" style="animation-duration: 1.75s;">
+<span class="material-symbols-outlined">forum</span>
+                Hubungi Kami via WhatsApp
+            </a>
+</div>
+</div>
+</section>
+<!-- Footer Component -->
+<footer class="w-full py-12 bg-background border-t border-outline-variant/20 flex flex-col lg:flex-row justify-between items-center px-margin-mobile lg:px-margin-desktop gap-gutter chapter-section">
+<div class="font-display-lg-mobile text-display-lg-mobile text-primary fade-in-up">
+            GRAHA STUDIO
+        </div>
+<div class="flex flex-wrap justify-center gap-6 fade-in-up delay-100">
+<a class="font-label-caps text-label-caps text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-caps text-label-caps text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-caps text-label-caps text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Instagram</a>
+<a class="font-label-caps text-label-caps text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">LinkedIn</a>
+</div>
+<div class="font-label-caps text-label-caps text-secondary-fixed-dim text-center lg:text-right mt-8 lg:mt-0 max-w-xs fade-in-up delay-200">
+            © 2024 GRAHA STUDIO. ALL RIGHTS RESERVED. ARCHITECTURAL NOIR EST. INDONESIA.
+        </div>
+</footer>
+<!-- Interactive Scripts -->
+<script>
+        // Scroll Progress Indicator Logic
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById('scroll-progress');
+            if(progressBar) {
+                progressBar.style.height = scrolled + '%';
+            }
+
+            // Navbar background logic
+            const nav = document.getElementById('main-nav');
+            if (winScroll > 50) {
+                nav.classList.add('bg-surface-container-low/90', 'backdrop-blur-md');
+                nav.classList.remove('bg-transparent');
+            } else {
+                nav.classList.add('bg-transparent');
+                nav.classList.remove('bg-surface-container-low/90', 'backdrop-blur-md');
+            }
+        });
+
+        // Intersection Observer for fade-in-up animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const animatedElements = entry.target.querySelectorAll('.fade-in-up');
+                        animatedElements.forEach(el => {
+                            el.classList.add('visible');
+                        });
+                        // Optional: unobserve if we only want it to fade in once
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const sections = document.querySelectorAll('.chapter-section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Trigger observe immediately for elements already in view (like Hero)
+            setTimeout(() => {
+                document.querySelectorAll('.chapter-section').forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                        const animatedElements = section.querySelectorAll('.fade-in-up');
+                        animatedElements.forEach(el => el.classList.add('visible'));
+                    }
+                });
+            }, 100);
+            
+            // Parallax effect logic
+            const parallaxImages = document.querySelectorAll('.parallax-img');
+            
+            let ticking = false;
+            
+            function updateParallax() {
+                const scrollY = window.scrollY;
+                const windowHeight = window.innerHeight;
+                
+                parallaxImages.forEach(img => {
+                    const container = img.closest('.parallax-container');
+                    const rect = container.getBoundingClientRect();
+                    const containerCenterY = rect.top + rect.height / 2;
+                    const windowCenterY = windowHeight / 2;
+                    
+                    // Only apply if container is somewhat visible
+                    if (rect.top < windowHeight && rect.bottom > 0) {
+                        const distanceFromCenter = containerCenterY - windowCenterY;
+                        // Increased magic number controls the intensity of the parallax for more dramatic cinematic feel
+                        const yShift = distanceFromCenter * 0.25; 
+                        img.style.setProperty('--parallax-y', `${yShift}px`);
+                    }
+                });
+                
+                ticking = false;
+            }
+            
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateParallax();
+                    });
+                    ticking = true;
+                }
+            });
+            
+            // Initial call
+            updateParallax();
+        });
+    </script>
+</body></html>
