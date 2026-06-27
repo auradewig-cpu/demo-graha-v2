@@ -11,7 +11,7 @@ export function ContactSection({ onOpen }: ContactSectionProps) {
       className="gs-section"
       style={{
         padding: "120px clamp(24px, 6vw, 80px)",
-        background: "var(--gs-surface-low)",
+        background: "rgba(7,8,10,0.4)",
         borderTop: "1px solid rgba(77,70,58,0.2)",
         borderBottom: "1px solid rgba(77,70,58,0.2)",
         marginTop: "80px",

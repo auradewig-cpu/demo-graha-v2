@@ -179,7 +179,7 @@ export function ChapterSection({
               width: "100%",
               aspectRatio: "16/10",
               border: "1px solid rgba(200,169,110,0.2)",
-              background: "var(--gs-surface-low)",
+              background: "transparent",
               position: "relative",
               overflow: "hidden",
               transition: "box-shadow 0.5s ease",
@@ -202,18 +202,18 @@ export function ChapterSection({
                 backgroundImage: `url(${imageUrl})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: 0.5,
+                opacity: 0.92,
                 transform: "scale(1.12)",
                 transition: "opacity 0.5s ease",
               }}
-              className="group-hover:opacity-70"
+              className="group-hover:opacity-100"
             />
             <div
               style={{
                 position: "absolute",
                 inset: 0,
                 background:
-                  "linear-gradient(135deg, rgba(13,13,13,0.3) 0%, transparent 70%)",
+                  "linear-gradient(135deg, rgba(13,13,13,0.1) 0%, transparent 70%)",
               }}
             />
             <div

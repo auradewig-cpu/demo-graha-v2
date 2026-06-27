@@ -188,7 +188,7 @@ export function PortfolioSection() {
                 backgroundPosition: "center",
                 transform: hovered === project.id ? "scale(1.08)" : "scale(1.0)",
                 transition: "transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s",
-                opacity: 0.55,
+                opacity: 0.9,
               }}
             />
             {/* Overlay */}
@@ -198,8 +198,8 @@ export function PortfolioSection() {
                 inset: 0,
                 background:
                   hovered === project.id
-                    ? "linear-gradient(to top, rgba(13,13,13,0.85) 0%, rgba(13,13,13,0.1) 60%)"
-                    : "linear-gradient(to top, rgba(13,13,13,0.7) 0%, transparent 60%)",
+                    ? "linear-gradient(to top, rgba(13,13,13,0.75) 0%, rgba(13,13,13,0.05) 60%)"
+                    : "linear-gradient(to top, rgba(13,13,13,0.5) 0%, transparent 60%)",
                 transition: "background 0.4s ease",
               }}
             />

@@ -115,16 +115,16 @@ export function JournalSection() {
             style={{
               transitionDelay: `${i * 100}ms`,
               padding: "32px",
-              background: "var(--gs-surface-low)",
+              background: "rgba(28,27,27,0.55)",
               cursor: "pointer",
               transition: "background 0.3s",
               borderLeft: i === 0 ? "none" : "1px solid rgba(77,70,58,0.2)",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "var(--gs-surface-container)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(32,32,31,0.65)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "var(--gs-surface-low)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(28,27,27,0.55)";
             }}
           >
             <div

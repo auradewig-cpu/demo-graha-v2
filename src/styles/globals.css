@@ -17,8 +17,12 @@
 }
 
 /* Graha Studio Global Styles */
+body {
+  background: #07080A;
+}
+
 .graha-root {
-  background-color: var(--gs-bg);
+  background-color: transparent;
   color: var(--gs-on-surface);
   font-family: 'Inter', sans-serif;
   scroll-behavior: smooth;

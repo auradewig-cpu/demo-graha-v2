@@ -15,7 +15,7 @@ export function Footer() {
     <footer
       className="gs-section"
       style={{
-        background: "var(--gs-bg)",
+        background: "rgba(7,8,10,0.9)",
         borderTop: "1px solid rgba(77,70,58,0.2)",
         padding: "48px clamp(24px, 6vw, 80px)",
       }}

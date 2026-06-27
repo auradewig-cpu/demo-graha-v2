@@ -126,18 +126,18 @@ export function AtelierSection() {
                   backgroundImage: `url(${member.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center top",
-                  opacity: 0.5,
-                  filter: "grayscale(30%)",
+                  opacity: 0.88,
+                  filter: "grayscale(10%)",
                   transition: "transform 0.6s ease, opacity 0.4s",
                 }}
-                className="group-hover:scale-105 group-hover:opacity-70"
+                className="group-hover:scale-105 group-hover:opacity-100"
               />
               <div
                 style={{
                   position: "absolute",
                   inset: 0,
                   background:
-                    "linear-gradient(to top, rgba(13,13,13,0.8) 0%, transparent 50%)",
+                    "linear-gradient(to top, rgba(13,13,13,0.35) 0%, transparent 50%)",
                 }}
               />
             </div>

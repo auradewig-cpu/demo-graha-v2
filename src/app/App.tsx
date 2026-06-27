@@ -95,7 +95,7 @@ export default function App() {
   return (
     <div
       className="graha-root"
-      style={{ minHeight: "100vh", background: "var(--gs-bg)", color: "var(--gs-on-surface)" }}
+      style={{ minHeight: "100vh", background: "transparent", color: "var(--gs-on-surface)" }}
     >
       <Navbar activeSection={activeSection} />
       <ScrollProgress />

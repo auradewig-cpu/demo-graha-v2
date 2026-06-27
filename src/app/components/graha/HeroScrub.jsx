@@ -121,7 +121,7 @@ export function HeroScrub() {
           left: 0,
           width: "100vw",
           height: "100vh",
-          zIndex: heroVisible ? 1 : -1,
+          zIndex: heroVisible ? 0 : -1,
           opacity: heroVisible ? 1 : 0,
           transition: "opacity 0.3s ease",
           willChange: "transform",
@@ -140,7 +140,7 @@ export function HeroScrub() {
             position: "sticky",
             top: 0,
             height: "100vh",
-            background: "linear-gradient(to right, rgba(0,0,0,0.65) 40%, transparent 100%)",
+            background: "linear-gradient(to right, rgba(0,0,0,0.25) 30%, transparent 100%)",
             pointerEvents: "none",
             zIndex: 3,
           }}
