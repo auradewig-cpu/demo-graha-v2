@@ -21,31 +21,53 @@ export function useFrameSequence({ onReady, onProgress } = {}) {
   onReadyRef.current = onReady;
   onProgressRef.current = onProgress;
 
-  // Fix 3: createImageBitmap pre-decodes in worker thread — no main-thread jank
-  const loadFrame = useCallback((index, onLoad) => {
-    if (loaded.current[index]) { onLoad?.(); return; }
+  const MAX_CONCURRENT = 4;
+  const inFlight = useRef(new Set());
+  const pendingQueue = useRef([]);
 
-    if (USE_BITMAP) {
-      fetch(FRAME_PATH(index))
-        .then((r) => r.blob())
-        .then((blob) => createImageBitmap(blob))
-        .then((bitmap) => {
-          frames.current[index] = bitmap;
-          loaded.current[index] = true;
-          onLoad?.();
-        })
-        .catch(() => { loaded.current[index] = true; });
-    } else {
-      const img = new Image();
-      img.src = FRAME_PATH(index);
-      img.onload = () => {
+  const processQueue = useCallback(() => {
+    while (inFlight.current.size < MAX_CONCURRENT && pendingQueue.current.length > 0) {
+      const { index, onLoad } = pendingQueue.current.shift();
+      if (loaded.current[index]) { onLoad?.(); continue; }
+      inFlight.current.add(index);
+
+      const finish = (img) => {
         frames.current[index] = img;
         loaded.current[index] = true;
+        inFlight.current.delete(index);
         onLoad?.();
+        processQueue();
       };
-      img.onerror = () => { loaded.current[index] = true; };
+      const fail = () => {
+        loaded.current[index] = true;
+        inFlight.current.delete(index);
+        processQueue();
+      };
+
+      if (USE_BITMAP) {
+        fetch(FRAME_PATH(index))
+          .then((r) => r.blob())
+          .then((blob) => createImageBitmap(blob))
+          .then(finish)
+          .catch(fail);
+      } else {
+        const img = new Image();
+        img.decoding = "async";
+        img.onload = () => finish(img);
+        img.onerror = fail;
+        img.src = FRAME_PATH(index);
+      }
     }
   }, []);
+
+  // Fix 3: queue-based loader — max 4 concurrent, prevents ERR_CONNECTION_RESET
+  const loadFrame = useCallback((index, onLoad) => {
+    if (loaded.current[index]) { onLoad?.(); return; }
+    if (!pendingQueue.current.find((q) => q.index === index) && !inFlight.current.has(index)) {
+      pendingQueue.current.push({ index, onLoad });
+    }
+    processQueue();
+  }, [processQueue]);
 
   const loadBatch = useCallback((start, end, delay = 0) => {
     setTimeout(() => {

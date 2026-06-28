@@ -119,6 +119,24 @@ export function HeroScrub() {
         </div>
       )}
 
+      {/* FCP fallback: static img visible until canvas is ready */}
+      <img
+        src="/frames/hero-sequence-0001.webp"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: 0, left: 0,
+          width: "100vw",
+          height: "100vh",
+          objectFit: "cover",
+          zIndex: ready ? -1 : 0,
+          opacity: ready ? 0 : 1,
+          transition: "opacity 0.5s ease",
+          pointerEvents: "none",
+        }}
+      />
+
       {/* Fix 2: Canvas is position:fixed — no layout thrash on scroll */}
       <canvas
         ref={canvasRef}
