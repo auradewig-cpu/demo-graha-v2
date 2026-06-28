@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const PILLARS = [
   {
@@ -25,13 +25,21 @@ const PILLARS = [
 
 export function PhilosophySection() {
   const [active, setActive] = useState("01");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
     <section
       id="philosophy"
       className="gs-section"
       style={{
-        padding: "120px clamp(24px, 6vw, 80px)",
+        padding: isMobile ? "60px 5vw" : "120px clamp(24px, 6vw, 80px)",
         maxWidth: "1440px",
         margin: "0 auto",
         borderTop: "1px solid rgba(77,70,58,0.12)",
@@ -40,11 +48,10 @@ export function PhilosophySection() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "5fr 7fr",
-          gap: "80px",
+          gridTemplateColumns: isMobile ? "1fr" : "5fr 7fr",
+          gap: isMobile ? "40px" : "80px",
           alignItems: "center",
         }}
-        className="grid-cols-1 lg:grid-cols-2"
       >
         {/* Left */}
         <div>

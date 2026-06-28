@@ -76,9 +76,10 @@ export function useFrameSequence({ onReady, onProgress } = {}) {
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const isMobile = window.innerWidth < 1024;
-    const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
-    const maxW = isMobile ? 720 : window.innerWidth;
+    const isMobile = window.innerWidth < 768;
+    const isTablet = window.innerWidth < 1024;
+    const dpr = isMobile ? 1 : isTablet ? 1.25 : Math.min(window.devicePixelRatio || 1, 1.5);
+    const maxW = isMobile ? 720 : isTablet ? 900 : window.innerWidth;
     const scale = Math.min(1, maxW / window.innerWidth);
     canvas.width = Math.round(window.innerWidth * dpr * scale);
     canvas.height = Math.round(window.innerHeight * dpr * scale);

@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const POSTS = [
   {
@@ -28,12 +29,21 @@ const POSTS = [
 ];
 
 export function JournalSection() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   return (
     <section
       id="journal"
       className="gs-section"
       style={{
-        padding: "120px clamp(24px, 6vw, 80px)",
+        padding: isMobile ? "60px 5vw" : "120px clamp(24px, 6vw, 80px)",
         maxWidth: "1440px",
         margin: "0 auto",
         borderTop: "1px solid rgba(77,70,58,0.12)",
@@ -104,8 +114,11 @@ export function JournalSection() {
 
       <div
         data-reveal="fade-up"
-        style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2px" }}
-        className="grid-cols-1 lg:grid-cols-3"
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
+          gap: isMobile ? "2px" : "2px",
+        }}
       >
         {POSTS.map((post, i) => (
           <article
@@ -118,7 +131,8 @@ export function JournalSection() {
               background: "rgba(28,27,27,0.55)",
               cursor: "pointer",
               transition: "background 0.3s",
-              borderLeft: i === 0 ? "none" : "1px solid rgba(77,70,58,0.2)",
+              borderLeft: !isMobile && i !== 0 ? "1px solid rgba(77,70,58,0.2)" : "none",
+              borderTop: isMobile && i !== 0 ? "1px solid rgba(77,70,58,0.2)" : "none",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.background = "rgba(32,32,31,0.65)";

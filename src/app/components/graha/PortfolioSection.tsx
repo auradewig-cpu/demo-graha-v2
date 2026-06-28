@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 const PROJECTS = [
@@ -54,6 +54,14 @@ const FILTERS = ["All", "Residential", "Commercial", "High-rise", "Interior"];
 export function PortfolioSection() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [hovered, setHovered] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const filtered =
     activeFilter === "All"
@@ -65,7 +73,7 @@ export function PortfolioSection() {
       id="portfolio"
       className="gs-section"
       style={{
-        padding: "120px clamp(24px, 6vw, 80px)",
+        padding: isMobile ? "60px 5vw" : "120px clamp(24px, 6vw, 80px)",
         maxWidth: "1440px",
         margin: "0 auto",
         borderTop: "1px solid rgba(77,70,58,0.12)",
@@ -75,11 +83,12 @@ export function PortfolioSection() {
       <div
         style={{
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
           justifyContent: "space-between",
-          alignItems: "flex-end",
+          alignItems: isMobile ? "flex-start" : "flex-end",
           marginBottom: "48px",
           flexWrap: "wrap",
-          gap: "24px",
+          gap: isMobile ? "16px" : "24px",
         }}
       >
         <div>
@@ -113,7 +122,18 @@ export function PortfolioSection() {
         </div>
 
         {/* Filters */}
-        <div className="gs-fade d2" style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+        <div
+          className="gs-fade d2"
+          style={{
+            display: "flex",
+            gap: "8px",
+            flexWrap: isMobile ? "nowrap" : "wrap",
+            overflowX: isMobile ? "auto" : "visible",
+            paddingBottom: isMobile ? 4 : 0,
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
+          }}
+        >
           {FILTERS.map((f) => (
             <button
               key={f}
@@ -157,10 +177,9 @@ export function PortfolioSection() {
         data-reveal="fade-up"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
           gap: "16px",
         }}
-        className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
       >
         {filtered.map((project, i) => (
           <div
@@ -268,8 +287,8 @@ export function PortfolioSection() {
         className="gs-fade d3"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "32px",
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+          gap: isMobile ? "24px" : "32px",
           marginTop: "80px",
           paddingTop: "48px",
           borderTop: "1px solid rgba(77,70,58,0.2)",

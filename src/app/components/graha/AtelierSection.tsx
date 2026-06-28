@@ -25,13 +25,24 @@ const TEAM = [
   },
 ];
 
+import { useState, useEffect } from "react";
+
 export function AtelierSection() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   return (
     <section
       id="atelier"
       className="gs-section"
       style={{
-        padding: "120px clamp(24px, 6vw, 80px)",
+        padding: isMobile ? "60px 5vw" : "120px clamp(24px, 6vw, 80px)",
         maxWidth: "1440px",
         margin: "0 auto",
         borderTop: "1px solid rgba(77,70,58,0.12)",
@@ -84,10 +95,9 @@ export function AtelierSection() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "24px",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
+          gap: isMobile ? "32px" : "24px",
         }}
-        className="grid-cols-1 md:grid-cols-3"
       >
         {TEAM.map((member, i) => (
           <div
@@ -105,7 +115,7 @@ export function AtelierSection() {
             <div
               style={{
                 width: "100%",
-                aspectRatio: "3/4",
+                aspectRatio: isMobile ? "4/3" : "3/4",
                 overflow: "hidden",
                 border: "1px solid rgba(200,169,110,0.15)",
                 position: "relative",

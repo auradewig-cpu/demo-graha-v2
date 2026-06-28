@@ -52,6 +52,13 @@ export function HeroScrub() {
   const [loadPct, setLoadPct] = useState(0);
   const [progress, setProgress] = useState(0);
   const [heroVisible, setHeroVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const h = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", h, { passive: true });
+    return () => window.removeEventListener("resize", h);
+  }, []);
 
   const { canvasRef } = useFrameSequence({
     onReady: () => setReady(true),
@@ -129,10 +136,10 @@ export function HeroScrub() {
         }}
       />
 
-      {/* Scroll driver: 600vh tall, drives the RAF scrubbing */}
+      {/* Scroll driver: 600vh tall (400vh mobile), drives the RAF scrubbing */}
       <div
         id="hero-scrub-container"
-        style={{ height: "600vh", position: "relative", zIndex: 2 }}
+        style={{ height: isMobile ? "400vh" : "600vh", position: "relative", zIndex: 2 }}
       >
         {/* Dark overlay — sticky, above canvas */}
         <div
@@ -140,7 +147,9 @@ export function HeroScrub() {
             position: "sticky",
             top: 0,
             height: "100vh",
-            background: "linear-gradient(to right, rgba(0,0,0,0.25) 30%, transparent 100%)",
+            background: isMobile
+              ? "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 60%)"
+              : "linear-gradient(to right, rgba(0,0,0,0.25) 30%, transparent 100%)",
             pointerEvents: "none",
             zIndex: 3,
           }}
@@ -160,7 +169,8 @@ export function HeroScrub() {
                 marginTop: "-100vh",
                 display: "flex",
                 alignItems: "flex-end",
-                padding: "0 6vw 12vh",
+                justifyContent: isMobile ? "center" : "flex-start",
+                padding: isMobile ? "0 5vw 10vh" : "0 6vw 12vh",
                 opacity,
                 transform: `translateY(${translateY}px)`,
                 transition: "opacity 0.4s ease, transform 0.4s ease",
@@ -168,7 +178,7 @@ export function HeroScrub() {
                 zIndex: 4,
               }}
             >
-              <div style={{ maxWidth: 560 }}>
+              <div style={{ maxWidth: isMobile ? "100%" : 560 }}>
                 <p style={{
                   fontSize: 11,
                   letterSpacing: "0.15em",
@@ -176,107 +186,138 @@ export function HeroScrub() {
                   color: "#C8A96E",
                   marginBottom: 16,
                   fontFamily: "sans-serif",
+                  textAlign: isMobile ? "center" : "left",
                 }}>
                   {ch.eyebrow}
                 </p>
                 <h2 style={{
-                  fontSize: "clamp(36px, 5vw, 64px)",
+                  fontSize: isMobile ? "clamp(28px, 8vw, 36px)" : "clamp(36px, 5vw, 64px)",
                   fontFamily: "Georgia, serif",
                   color: "#F5F0E8",
                   lineHeight: 1.1,
                   fontWeight: 700,
                   marginBottom: 20,
                   whiteSpace: "pre-line",
+                  textAlign: isMobile ? "center" : "left",
                 }}>
                   {ch.headline}
                 </h2>
-                <p style={{
-                  fontSize: 16,
-                  color: "#8C8078",
-                  lineHeight: 1.7,
-                  marginBottom: ch.cta ? 28 : 0,
-                  maxWidth: 400,
-                }}>
-                  {ch.sub}
-                </p>
+                {(!isMobile || i === 0 || i === 4) && (
+                  <p style={{
+                    fontSize: 16,
+                    color: "#8C8078",
+                    lineHeight: 1.7,
+                    marginBottom: ch.cta ? 28 : 0,
+                    maxWidth: 400,
+                    textAlign: isMobile ? "center" : "left",
+                  }}>
+                    {ch.sub}
+                  </p>
+                )}
                 {ch.cta && (
-                  <a
-                    href={ch.cta.href}
-                    style={{
-                      display: "inline-block",
-                      padding: "12px 28px",
-                      border: "1px solid #C8A96E",
-                      color: "#C8A96E",
-                      fontSize: 13,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      textDecoration: "none",
-                      fontFamily: "sans-serif",
-                      transition: "background 0.2s, color 0.2s",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "#C8A96E";
-                      e.currentTarget.style.color = "#000";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "transparent";
-                      e.currentTarget.style.color = "#C8A96E";
-                    }}
-                  >
-                    {ch.cta.label}
-                  </a>
+                  <div style={{ display: "flex", justifyContent: isMobile ? "center" : "flex-start" }}>
+                    <a
+                      href={ch.cta.href}
+                      style={{
+                        display: "inline-block",
+                        padding: "12px 28px",
+                        border: "1px solid #C8A96E",
+                        color: "#C8A96E",
+                        fontSize: 13,
+                        letterSpacing: "0.1em",
+                        textTransform: "uppercase",
+                        textDecoration: "none",
+                        fontFamily: "sans-serif",
+                        transition: "background 0.2s, color 0.2s",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#C8A96E";
+                        e.currentTarget.style.color = "#000";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent";
+                        e.currentTarget.style.color = "#C8A96E";
+                      }}
+                    >
+                      {ch.cta.label}
+                    </a>
+                  </div>
                 )}
               </div>
             </div>
           );
         })}
 
-        {/* Chapter indicator — top right */}
-        <div style={{
-          position: "sticky",
-          top: "24px",
-          height: 0,
-          display: "flex",
-          justifyContent: "flex-end",
-          paddingRight: "24px",
-          zIndex: 5,
-        }}>
-          {CHAPTERS.map((ch, i) => {
-            const op = getOpacity(progress, ch.range);
-            return op > 0.5 ? (
-              <span key={i} style={{
-                fontSize: 11,
-                letterSpacing: "0.1em",
-                color: "#C8A96E",
-                fontFamily: "sans-serif",
-              }}>
-                0{i + 1} / 05
-              </span>
-            ) : null;
-          })}
-        </div>
+        {/* Chapter indicator — top right (desktop only) */}
+        {!isMobile && (
+          <div style={{
+            position: "sticky",
+            top: "24px",
+            height: 0,
+            display: "flex",
+            justifyContent: "flex-end",
+            paddingRight: "24px",
+            zIndex: 5,
+          }}>
+            {CHAPTERS.map((ch, i) => {
+              const op = getOpacity(progress, ch.range);
+              return op > 0.5 ? (
+                <span key={i} style={{
+                  fontSize: 11,
+                  letterSpacing: "0.1em",
+                  color: "#C8A96E",
+                  fontFamily: "sans-serif",
+                }}>
+                  0{i + 1} / 05
+                </span>
+              ) : null;
+            })}
+          </div>
+        )}
       </div>
 
-      {/* Scroll progress bar — fixed left edge */}
-      <div style={{
-        position: "fixed",
-        left: 0,
-        top: 0,
-        width: 2,
-        height: "100vh",
-        background: "rgba(200,169,110,0.15)",
-        zIndex: 50,
-        pointerEvents: "none",
-        opacity: heroVisible ? 1 : 0,
-        transition: "opacity 0.3s ease",
-      }}>
+      {/* Scroll progress bar — horizontal bottom on mobile, vertical left on desktop */}
+      {isMobile ? (
         <div style={{
-          width: "100%",
-          height: `${progress * 100}%`,
-          background: "#C8A96E",
-          transition: "height 0.05s linear",
-        }} />
-      </div>
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          width: "100vw",
+          height: 2,
+          background: "rgba(200,169,110,0.15)",
+          zIndex: 50,
+          pointerEvents: "none",
+          opacity: heroVisible ? 1 : 0,
+          transition: "opacity 0.3s ease",
+        }}>
+          <div style={{
+            height: "100%",
+            width: `${progress * 100}%`,
+            background: "#C8A96E",
+            transition: "width 0.05s linear",
+          }} />
+        </div>
+      ) : (
+        <div style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          width: 2,
+          height: "100vh",
+          background: "rgba(200,169,110,0.15)",
+          zIndex: 50,
+          pointerEvents: "none",
+          opacity: heroVisible ? 1 : 0,
+          transition: "opacity 0.3s ease",
+        }}>
+          <div style={{
+            width: "100%",
+            height: `${progress * 100}%`,
+            background: "#C8A96E",
+            transition: "height 0.05s linear",
+          }} />
+        </div>
+      )}
     </>
   );
 }

@@ -16,11 +16,22 @@ interface NavbarProps {
 export function Navbar({ activeSection }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const check = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth >= 768) setMobileOpen(false);
+    };
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   const handleNav = (href: string) => {
@@ -44,7 +55,7 @@ export function Navbar({ activeSection }: NavbarProps) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "24px 80px",
+          padding: isMobile ? "16px 24px" : "24px 80px",
         }}
         className="px-6 lg:px-20 py-6"
       >

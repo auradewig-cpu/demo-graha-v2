@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 
 interface ChapterSectionProps {
@@ -22,6 +22,14 @@ export function ChapterSection({
 }: ChapterSectionProps) {
   const imgRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     let ticking = false;
@@ -47,10 +55,10 @@ export function ChapterSection({
       id={id}
       className="gs-section"
       style={{
-        minHeight: "100vh",
+        minHeight: isMobile ? "auto" : "100vh",
         display: "flex",
         alignItems: "center",
-        padding: "120px clamp(24px, 6vw, 80px)",
+        padding: isMobile ? "60px 5vw" : "120px clamp(24px, 6vw, 80px)",
         maxWidth: "1440px",
         margin: "0 auto",
         borderTop: "1px solid rgba(77,70,58,0.12)",
@@ -59,29 +67,29 @@ export function ChapterSection({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(12, 1fr)",
-          gap: "32px",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(12, 1fr)",
+          gap: isMobile ? "32px" : "32px",
           width: "100%",
-          direction: reverse ? "rtl" : "ltr",
+          direction: isMobile ? "ltr" : reverse ? "rtl" : "ltr",
         }}
       >
         {/* Text col */}
         <div
           style={{
-            gridColumn: "1 / 6",
+            gridColumn: isMobile ? "1 / 2" : "1 / 6",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             direction: "ltr",
+            order: isMobile ? 0 : undefined,
           }}
-          className="col-span-12 lg:col-span-5"
         >
           <span
             className="gs-fade"
             data-reveal="fade-up"
             style={{
               fontFamily: "'Playfair Display', serif",
-              fontSize: "clamp(40px, 5vw, 64px)",
+              fontSize: isMobile ? "clamp(48px, 12vw, 64px)" : "clamp(40px, 5vw, 64px)",
               fontWeight: 600,
               color: "var(--gs-gold)",
               opacity: 0.4,
@@ -97,7 +105,7 @@ export function ChapterSection({
             data-reveal="headline"
             style={{
               fontFamily: "'Playfair Display', serif",
-              fontSize: "clamp(28px, 3.5vw, 48px)",
+              fontSize: isMobile ? "clamp(28px, 7vw, 36px)" : "clamp(28px, 3.5vw, 48px)",
               fontWeight: 500,
               color: "var(--gs-on-surface)",
               marginBottom: "24px",
@@ -167,17 +175,17 @@ export function ChapterSection({
         {/* Image col */}
         <div
           style={{
-            gridColumn: "6 / 13",
+            gridColumn: isMobile ? "1 / 2" : "6 / 13",
             direction: "ltr",
+            order: isMobile ? 1 : undefined,
           }}
-          className="col-span-12 lg:col-span-7 mt-12 lg:mt-0"
         >
           <div
             ref={containerRef}
             data-reveal={reverse ? "slide-right" : "slide-left"}
             style={{
               width: "100%",
-              aspectRatio: "16/10",
+              aspectRatio: isMobile ? "16/10" : "16/10",
               border: "1px solid rgba(200,169,110,0.2)",
               background: "transparent",
               position: "relative",
